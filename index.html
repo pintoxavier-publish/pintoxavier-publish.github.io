@@ -1,10 +1,630 @@
+```html
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Pinto Xavier home</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Pinto Xavier</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #fff;
+    }
+
+    /* =====================================================
+       MAIN SCREEN
+    ===================================================== */
+
+    .scene {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    /* =====================================================
+       1. BREATHING DOTS
+    ===================================================== */
+
+    .breathing {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #fff;
+      z-index: 10;
+
+      animation: breathingFade 1s ease forwards;
+      animation-delay: 3s;
+    }
+
+    .dots {
+      position: relative;
+      width: min(70vw, 700px);
+      height: min(50vw, 450px);
+
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 22px;
+
+      align-items: center;
+      justify-items: center;
+    }
+
+    .dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #d9d9d9;
+
+      animation: breathe 3s ease-in-out infinite;
+    }
+
+    /* Slightly different timing makes the surface feel organic */
+
+    .dot:nth-child(2n) {
+      animation-delay: .2s;
+    }
+
+    .dot:nth-child(3n) {
+      animation-delay: .45s;
+    }
+
+    .dot:nth-child(4n) {
+      animation-delay: .7s;
+    }
+
+    .dot:nth-child(5n) {
+      animation-delay: 1s;
+    }
+
+    @keyframes breathe {
+      0%, 100% {
+        transform: scale(.7);
+        opacity: .30;
+      }
+
+      50% {
+        transform: scale(1.7);
+        opacity: .75;
+      }
+    }
+
+    @keyframes breathingFade {
+      0% {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      100% {
+        opacity: 0;
+        visibility: hidden;
+      }
+    }
+
+    /* =====================================================
+       2. EARTH TRANSITION
+    ===================================================== */
+
+    .earth-scene {
+      position: absolute;
+      inset: 0;
+
+      background:
+        radial-gradient(
+          circle at 50% 58%,
+          #1e6c46 0%,
+          #174f38 14%,
+          #0b2530 34%,
+          #030911 58%,
+          #000 100%
+        );
+
+      opacity: 0;
+
+      animation: earthAppear 1.5s ease forwards;
+      animation-delay: 3s;
+
+      z-index: 5;
+    }
+
+    /* stars */
+
+    .earth-scene::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+
+      background-image:
+        radial-gradient(circle, rgba(255,255,255,.8) 1px, transparent 1px),
+        radial-gradient(circle, rgba(255,255,255,.5) 1px, transparent 1px);
+
+      background-size: 90px 90px, 150px 150px;
+
+      opacity: .35;
+    }
+
+    /* Earth */
+
+    .earth {
+      position: absolute;
+
+      width: 70vh;
+      height: 70vh;
+
+      left: 50%;
+      top: 55%;
+
+      transform:
+        translate(-50%, -50%)
+        scale(1);
+
+      border-radius: 50%;
+
+      background:
+        radial-gradient(
+          circle at 35% 30%,
+          #4eaf6e 0%,
+          #1c7049 24%,
+          #15523d 42%,
+          #0b3040 62%,
+          #061827 80%,
+          #020910 100%
+        );
+
+      box-shadow:
+        0 0 60px rgba(75, 170, 130, .18),
+        inset -50px -20px 100px rgba(0,0,0,.8),
+        inset 30px 10px 60px rgba(100,200,150,.12);
+
+      animation:
+        earthZoom 5s cubic-bezier(.45,0,.2,1) forwards;
+
+      animation-delay: 3s;
+    }
+
+    /* rough land/water detail */
+
+    .earth::before {
+      content: "";
+      position: absolute;
+      inset: 12%;
+
+      border-radius: 50%;
+
+      background:
+        radial-gradient(
+          ellipse at 30% 40%,
+          rgba(105,175,92,.7),
+          transparent 20%
+        ),
+        radial-gradient(
+          ellipse at 65% 55%,
+          rgba(80,150,80,.55),
+          transparent 25%
+        ),
+        radial-gradient(
+          ellipse at 48% 70%,
+          rgba(90,170,90,.5),
+          transparent 20%
+        );
+
+      filter: blur(8px);
+    }
+
+    /* =====================================================
+       KUTTANAD PLACEHOLDER
+    ===================================================== */
+
+    .kuttanad {
+      position: absolute;
+
+      left: 50%;
+      top: 50%;
+
+      width: 180px;
+      height: 180px;
+
+      transform:
+        translate(-50%, -50%)
+        scale(.15);
+
+      border-radius: 50%;
+
+      background:
+        radial-gradient(
+          circle,
+          #80ad68,
+          #477f55 38%,
+          #174f45 65%,
+          #082f36 100%
+        );
+
+      box-shadow:
+        0 0 50px rgba(100,180,130,.5);
+
+      opacity: 0;
+
+      animation:
+        kuttanadAppear 4s ease forwards;
+
+      animation-delay: 6s;
+    }
+
+    .kuttanad::after {
+      content: "KUTTANAD";
+
+      position: absolute;
+
+      left: 50%;
+      top: 50%;
+
+      transform: translate(-50%, -50%);
+
+      color: white;
+
+      font-size: 14px;
+      letter-spacing: 5px;
+
+      white-space: nowrap;
+
+      text-shadow: 0 2px 10px #000;
+    }
+
+    /* =====================================================
+       3. PINTO XAVIER
+    ===================================================== */
+
+    .profile {
+      position: absolute;
+
+      inset: 0;
+
+      z-index: 20;
+
+      display: flex;
+      flex-direction: column;
+
+      justify-content: center;
+      align-items: center;
+
+      background: rgba(255,255,255,.96);
+
+      opacity: 0;
+      visibility: hidden;
+
+      animation: profileAppear 1.5s ease forwards;
+      animation-delay: 10s;
+    }
+
+    .avatar {
+      width: 130px;
+      height: 130px;
+
+      border-radius: 50%;
+
+      background:
+        radial-gradient(
+          circle at 50% 35%,
+          #eeeeee,
+          #d5d5d5
+        );
+
+      border: 1px solid #d2d2d2;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      box-shadow:
+        0 10px 40px rgba(0,0,0,.08);
+    }
+
+    .avatar-icon {
+      width: 48px;
+      height: 48px;
+
+      position: relative;
+    }
+
+    /* simple generic person icon */
+
+    .avatar-icon::before {
+      content: "";
+
+      position: absolute;
+
+      width: 18px;
+      height: 18px;
+
+      border-radius: 50%;
+
+      background: #999;
+
+      left: 15px;
+      top: 2px;
+    }
+
+    .avatar-icon::after {
+      content: "";
+
+      position: absolute;
+
+      width: 40px;
+      height: 22px;
+
+      border-radius: 22px 22px 8px 8px;
+
+      background: #999;
+
+      left: 4px;
+      bottom: 2px;
+    }
+
+    .name {
+      margin-top: 28px;
+
+      font-size: clamp(30px, 5vw, 56px);
+
+      font-weight: 300;
+
+      letter-spacing: 2px;
+
+      color: #222;
+    }
+
+    .welcome {
+      margin-top: 10px;
+
+      font-size: 14px;
+
+      letter-spacing: 4px;
+
+      color: #888;
+
+      text-transform: uppercase;
+    }
+
+    /* =====================================================
+       ANIMATIONS
+    ===================================================== */
+
+    @keyframes earthAppear {
+      0% {
+        opacity: 0;
+      }
+
+      100% {
+        opacity: 1;
+      }
+    }
+
+    @keyframes earthZoom {
+      0% {
+        transform:
+          translate(-50%, -50%)
+          scale(1);
+      }
+
+      100% {
+        transform:
+          translate(-50%, -50%)
+          scale(7);
+      }
+    }
+
+    @keyframes kuttanadAppear {
+      0% {
+        opacity: 0;
+        transform:
+          translate(-50%, -50%)
+          scale(.15);
+      }
+
+      30% {
+        opacity: 1;
+      }
+
+      100% {
+        opacity: 1;
+        transform:
+          translate(-50%, -50%)
+          scale(1);
+      }
+    }
+
+    @keyframes profileAppear {
+      0% {
+        opacity: 0;
+        visibility: hidden;
+      }
+
+      1% {
+        visibility: visible;
+      }
+
+      100% {
+        opacity: 1;
+        visibility: visible;
+      }
+    }
+
+    /* =====================================================
+       MOBILE
+    ===================================================== */
+
+    @media (max-width: 600px) {
+
+      .dots {
+        width: 85vw;
+        height: 55vw;
+
+        gap: 12px;
+      }
+
+      .dot {
+        width: 4px;
+        height: 4px;
+      }
+
+      .earth {
+        width: 55vh;
+        height: 55vh;
+      }
+
+      .avatar {
+        width: 110px;
+        height: 110px;
+      }
+    }
+  </style>
 </head>
+
 <body>
-  <h1>Hello World</h1>
-  <h2>Pinto Xavier welcome page </h2>
+
+<div class="scene">
+
+  <!-- ==========================================
+       FIRST 3 SECONDS
+  =========================================== -->
+
+  <div class="breathing">
+
+    <div class="dots">
+
+      <!-- 72 breathing dots -->
+
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+
+    </div>
+
+  </div>
+
+
+  <!-- ==========================================
+       EARTH / SPACE TRANSITION
+  =========================================== -->
+
+  <div class="earth-scene">
+
+    <div class="earth"></div>
+
+    <div class="kuttanad"></div>
+
+  </div>
+
+
+  <!-- ==========================================
+       PINTO XAVIER
+  =========================================== -->
+
+  <div class="profile">
+
+    <div class="avatar">
+      <div class="avatar-icon"></div>
+    </div>
+
+    <div class="name">
+      Pinto Xavier
+    </div>
+
+    <div class="welcome">
+      Welcome
+    </div>
+
+  </div>
+
+</div>
+
 </body>
 </html>
+```
